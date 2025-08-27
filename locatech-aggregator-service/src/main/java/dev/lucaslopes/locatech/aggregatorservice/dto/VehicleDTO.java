@@ -1,6 +1,11 @@
 package dev.lucaslopes.locatech.aggregatorservice.dto;
 
+import dev.lucaslopes.locatech.catalog.VehicleProto;
+import dev.lucaslopes.locatech.reservation.ReservationProto;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SchemaMapping("Vehicle")
 public class VehicleDTO {
@@ -19,6 +24,18 @@ public class VehicleDTO {
     this.isAvailable = isAvailable;
   }
 
+  public VehicleDTO() {
+  }
+
+  public VehicleDTO(VehicleProto vehicleProto) {
+    this.id = vehicleProto.getId();
+    this.make = vehicleProto.getMake();
+    this.model = vehicleProto.getModel();
+    this.category = vehicleProto.getCategory();
+    this.isAvailable = vehicleProto.getIsAvailable();
+  }
+
+
   public Long getId() { return id; }
   public void setId(Long id) { this.id = id; }
 
@@ -33,4 +50,9 @@ public class VehicleDTO {
 
   public Boolean getIsAvailable() { return isAvailable; }
   public void setIsAvailable(Boolean isAvailable) { this.isAvailable = isAvailable; }
+  
+  public static List<VehicleDTO> fromProList(List<VehicleProto> vehicleProtoList) {
+    return vehicleProtoList.stream().map(VehicleDTO::new).collect(Collectors.toList());
+  }
+  
 }
